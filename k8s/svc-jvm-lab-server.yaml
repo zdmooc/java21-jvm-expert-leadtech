@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: jvm-lab-server
+  namespace: jvm-labs
+spec:
+  selector:
+    app: jvm-lab-server
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080

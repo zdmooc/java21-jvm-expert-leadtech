@@ -1,0 +1,21 @@
+# Maven
+target/
+**/target/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs / dumps / profiles
+*.log
+*.hprof
+*.jfr
+*.svg
+*.html
+profiles/
+dumps/

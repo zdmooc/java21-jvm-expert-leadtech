@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jvm-lab-server
+  namespace: jvm-labs
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jvm-lab-server
+  template:
+    metadata:
+      labels:
+        app: jvm-lab-server
+    spec:
+      containers:
+        - name: app
+          image: jvm-lab-server:1.0.0
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: PORT
+              value: "8080"
+            - name: SERVER_EXECUTOR
+              value: "virtual"
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 2
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
