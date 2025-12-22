@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springboot-lab
+  labels:
+    app: springboot-lab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: springboot-lab
+  template:
+    metadata:
+      labels:
+        app: springboot-lab
+      annotations:
+        # Dynatrace (si injection sélective activée) :
+        # oneagent.dynatrace.com/inject: "true"
+        #
+        # OpenTelemetry (optionnel) :
+        # instrumentation.opentelemetry.io/inject-java: "true"
+        #
+        # Prometheus scrape (si vous n'utilisez pas ServiceMonitor) :
+        prometheus.io/scrape: "true"
+        prometheus.io/path: "/actuator/prometheus"
+        prometheus.io/port: "8080"
+    spec:
+      containers:
+        - name: app
+          image: springboot-lab-image
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8080
+          env:
+            - name: JAVA_OPTS
+              value: ""
+            # Exemple OTLP direct vers Dynatrace (si vous n'utilisez pas un collector)
+            # - name: OTEL_EXPORTER_OTLP_ENDPOINT
+            #   value: "https://{your-environment-id}.live.dynatrace.com/api/v2/otlp"
+            # - name: OTEL_EXPORTER_OTLP_HEADERS
+            #   valueFrom:
+            #     secretKeyRef:
+            #       name: dynatrace-otlp
+            #       key: headers
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 20
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 50m
+              memory: 256Mi
+            limits:
+              cpu: "1"
+              memory: 1Gi

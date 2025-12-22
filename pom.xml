@@ -36,4 +36,28 @@
       </plugins>
     </pluginManagement>
   </build>
+<profiles>
+  <!-- Modules optionnels : frameworks & déploiement -->
+  <profile>
+    <id>framework-spring</id>
+    <modules>
+      <module>framework/springboot-lab</module>
+    </modules>
+  </profile>
+
+  <profile>
+    <id>framework-quarkus</id>
+    <modules>
+      <module>framework/quarkus-lab</module>
+    </modules>
+  </profile>
+
+  <profile>
+    <id>framework-all</id>
+    <modules>
+      <module>framework/springboot-lab</module>
+      <module>framework/quarkus-lab</module>
+    </modules>
+  </profile>
+</profiles>
 </project>

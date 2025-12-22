@@ -65,3 +65,24 @@ templates/                    # modèles postmortem / perf test plan / review
 
 ---
 Si tu veux, je peux adapter ce dépôt à ton contexte (Spring Boot, Quarkus, OpenShift, Dynatrace) en ajoutant un module optionnel “framework”.
+
+## Modules optionnels (framework)
+Objectif : réutiliser les **mêmes labs JVM** (CPU/alloc/locks/leaks/JFR) avec des stacks **Spring Boot**, **Quarkus**, et les déployer sur **OpenShift** avec instrumentation **Dynatrace**.
+
+- Vue d’ensemble + commandes : `framework/README.md`
+- Spring Boot (Java 21) : `framework/springboot-lab/`
+- Quarkus (Java 21, @RunOnVirtualThread) : `framework/quarkus-lab/`
+- OpenShift manifests (Service/Route/Deployment) : `framework/openshift/`
+- Dynatrace (Operator injection + OTLP) : `framework/observability/dynatrace/`
+
+Build (au choix) :
+```bash
+# Spring Boot
+mvn -Pframework-spring -pl framework/springboot-lab -am package
+
+# Quarkus
+mvn -Pframework-quarkus -pl framework/quarkus-lab -am package
+
+# Les deux
+mvn -Pframework-all package
+```

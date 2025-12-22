@@ -1,0 +1,14 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: quarkus-lab
+  labels:
+    app: quarkus-lab
+spec:
+  to:
+    kind: Service
+    name: quarkus-lab
+  port:
+    targetPort: http
+  tls:
+    termination: edge
